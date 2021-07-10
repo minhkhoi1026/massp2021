@@ -58,12 +58,13 @@ def kraft_code(source):
 
 
 if __name__ == '__main__':
-    source = [character('a', 0.5, "0"), character('b', 0.3, "10"), character('c', 0.2, "110")]
+    source = [character('a', 0.5), character('b', 0.3), character('c', 0.2)]
 
     print(f"Entropy: {entropy(source)}")
 
-    print(f"Mean codeword length: {mean_codeword_length(source)}")
-
+    print("Kraft code: ")
     kraft_code(source)
     for elem in source:
         print(elem.char, elem.prob, elem.code)
+
+    print(f"Mean codeword length: {mean_codeword_length(source)}")
