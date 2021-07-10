@@ -1,46 +1,69 @@
 import numpy as np
 
-class elem:
-    def __init__(self, char, p, code = None):
+class character:
+    def __init__(self, char, prob, code = None):
         self.char = char
-        self.p = p
+        self.prob = prob
         self.code = code
 
 '''Calculate entropy of distribution p: H(p) = -(p_1 * log(p_1) + ... p_n * log(p_n))'''
-def entropy(p):
+def entropy(source):
+    n = len(source)
     res = 0
-    n = len(p) # number of element in p
-
     for i in range(n):
-        res -= p[i].p * np.log2(p[i].p)
-
+        res -= source[i].prob * np.log2(source[i].prob)
     return res
 
-'''Calculate cross entropy between p and q: H(p; q) = -(p_1 * log(q_1) + ... p_n * log(q_n))'''
-def cross_entropy(p, q):
+def mean_codeword_length(source):
+    n = len(source)
     res = 0
-    n = len(p) # number of element in p (or q)
-
     for i in range(n):
-        res -= p[i].p * np.log2(q[i].p)
-
+        res += source[i].prob * len(source[i].code)
     return res
 
-def mean_codeword_length(p):
-    res = 0
-    n = len(p) # number of element in p (or q)
-
+def kraft_code(source):
+    lengths = []
+    max_length = 0
+    n = len(source)
+    
+    # calculate expected length of each @source character
     for i in range(n):
-        res += p[i].p * len(p[i].code)
+        new_length = - np.log2(source[i].prob)
+        new_length = int(np.ceil(new_length))
+        lengths.append(new_length)
+        max_length = max(max_length, new_length)
+    
+    # store all leaves at height @max_length of coding tree
+    leaves = ['']
+    for k in range(max_length):
+        new_leaves = []
+        for leaf in leaves:
+            new_leaves.append(leaf + '0')
+            new_leaves.append(leaf + '1')
+        leaves = new_leaves
 
-    return res
+    # calculate Kraft's code for @source
+    block_start = 0
+    for i in range(n):
+        # codeword for @source[i]
+        source[i].code = leaves[block_start][0:lengths[i]]
+        # go to next block
+        block_start += int(pow(2, max_length - lengths[i]))
 
-#def kraft_code(p):
+# def huffman_code(source):
+
+# def tunstall_code(source):
+
+# def lempel_ziv_code(source):
 
 
 if __name__ == '__main__':
-    p = [elem('a', 0.5, "0"), elem('b', 0.3, "10"), elem('c', 0.2, "110")]
-    q = [elem('a', 0.4), elem('b', 0.3), elem('c', 0.3)]
-    print(f"Entropy: {entropy(p)}")
-    print(f"Cross entropy: {cross_entropy(p, q)}")
-    print(f"Mean codeword length: {mean_codeword_length(p)}")
+    source = [character('a', 0.5, "0"), character('b', 0.3, "10"), character('c', 0.2, "110")]
+
+    print(f"Entropy: {entropy(source)}")
+
+    print(f"Mean codeword length: {mean_codeword_length(source)}")
+
+    kraft_code(source)
+    for elem in source:
+        print(elem.char, elem.prob, elem.code)
