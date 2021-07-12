@@ -7,13 +7,14 @@ class character:
         self.code = code
 
 class TreeNode(NodeMixin):  # Add Node feature
-     def __init__(self, name, char, parent=None, children=None):
+     def __init__(self, name, char = None, parent=None, children=None):
         self.name = name
         self.char = char
         self.parent = parent
         if children:  # set children only if given
             self.children = children
-# label each node in coding tree with codeword
+
+# label each node in coding tree @root with codeword
 def label_coding_tree(root):
     # if root is leaf then return
     if (len(root.children) == 0):
@@ -26,7 +27,7 @@ def label_coding_tree(root):
         label_coding_tree(child)
         c += 1
 
-# get code from all leaves of tree
+# get code from all leaves of tree @root
 def get_code_from_coding_tree(root):
     # if root is leaf then add value of root into result code
     if (len(root.children) == 0):

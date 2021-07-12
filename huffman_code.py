@@ -1,7 +1,7 @@
 from utils import *
 from coding_tree import *
 
-def huffman_encode(source):
+def huffman_code(source):
     tree_nodes = []
     for item in source:
         new_node = TreeNode("", char = item)
@@ -10,10 +10,10 @@ def huffman_encode(source):
     # build structure of Huffman Tree
     while (len(tree_nodes) > 1):
         # remove two node with smallest probability
-        tree_nodes.sort(key = lambda x: -x.char.prob)
-        x = tree_nodes[-1]
-        y = tree_nodes[-2]
-        tree_nodes = tree_nodes[:-2]
+        tree_nodes.sort(key = lambda x: x.char.prob)
+        x = tree_nodes[0]
+        y = tree_nodes[1]
+        tree_nodes = tree_nodes[2:]
         # create new node
         new_val = x.char.val + y.char.val
         new_prob = x.char.prob + y.char.prob
@@ -32,7 +32,7 @@ if __name__ == '__main__':
     source = [character('a', 0.5), character('b', 0.3), character('c', 0.2)]
 
     print("Huffman code: ")
-    code = huffman_encode(source)
+    code = huffman_code(source)
     for elem in code:
         print(elem.val, elem.prob, elem.code)
 

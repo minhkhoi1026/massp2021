@@ -16,3 +16,14 @@ def mean_codeword_length(source):
     for i in range(n):
         res += source[i].prob * len(source[i].code)
     return res
+
+# return list of all leaves at height @length of binary tree
+def get_all_binary_word_with_length(length):
+    leaves = ['']
+    for k in range(length):
+        new_leaves = []
+        for leaf in leaves:
+            new_leaves.append(leaf + '0')
+            new_leaves.append(leaf + '1')
+        leaves = new_leaves
+    return leaves
