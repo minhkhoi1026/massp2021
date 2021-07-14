@@ -27,7 +27,7 @@ def kraft_code(source):
     return source
 
 if __name__ == '__main__':
-    source = [character('a', 0.5), character('b', 0.3), character('c', 0.2)]
+    source = [character('A', 0.5), character('B', 0.2), character('C', 0.2), character('D', 0.1)]
 
     print("Kraft code: ")
     code = kraft_code(source)
